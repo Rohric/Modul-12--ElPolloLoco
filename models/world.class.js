@@ -1,7 +1,7 @@
 class World {
   character = new Character();
   enemies = [new chicken(), new chicken(), new chicken()];
-
+  clouds = [new Cloud()];
   canvas;
   ctx;
 
@@ -20,9 +20,25 @@ class World {
       this.character.width,
       this.character.height
     );
-    
+
     this.enemies.forEach((enemy) => {
-      this.ctx.drawImage(enemy.img, enemy.x, enemy.y, enemy.width, enemy.height);
+      this.ctx.drawImage(
+        enemy.img,
+        enemy.x,
+        enemy.y,
+        enemy.width,
+        enemy.height
+      );
+    });
+
+    this.clouds.forEach((cloud) => {
+      this.ctx.drawImage(
+        cloud.img,
+        cloud.x,
+        cloud.y,
+        cloud.width,
+        cloud.height
+      );
     });
 
     let self = this;

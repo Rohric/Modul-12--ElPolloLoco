@@ -7,4 +7,5 @@ function init() {
   world = new World(canvas)
 
   console.log('My Charakter is', world.character);
+  console.log('My Charakter is', world.clouds);
 }

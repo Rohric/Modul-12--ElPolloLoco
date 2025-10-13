@@ -1,0 +1,1 @@
+class BackgroundObject extends MovableObject
