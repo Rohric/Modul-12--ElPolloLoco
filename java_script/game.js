@@ -7,7 +7,6 @@ function init() {
   world = new World(canvas, keyboard);
 
   console.log("My Charakter is", world.character);
-  console.log("My Charakter is", world.clouds);
 }
 
 window.addEventListener("keydown", (event) => {
@@ -30,7 +29,6 @@ window.addEventListener("keydown", (event) => {
    if (event.keyCode == 40) {
     keyboard.DOWN = true;
   }
-  console.log(event);
 });
 
 window.addEventListener("keyup", (event) => {
@@ -53,5 +51,4 @@ window.addEventListener("keyup", (event) => {
    if (event.keyCode == 40) {
     keyboard.DOWN = false;
   }
-  console.log(event);
 });
