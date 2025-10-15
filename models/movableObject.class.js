@@ -45,6 +45,15 @@ class MovableObject {
     }
   }
 
+  isColliding(MovableObject) {
+    return (
+      this.x + this.width > MovableObject.x &&
+      this.y + this.height > MovableObject.y &&
+      this.x < MovableObject.x &&
+      this.y < MovableObject.y + MovableObject.height
+    );
+  }
+
   loadImages(arr) {
     arr.forEach((path) => {
       let img = new Image();
