@@ -46,7 +46,7 @@ class MovableObject {
       ctx.stroke();
     }
   }
-
+// fgdggsfgfdgdg
   isColliding(MovableObject) {
     return (
       this.x + this.width > MovableObject.x &&
@@ -54,6 +54,17 @@ class MovableObject {
       this.x < MovableObject.x &&
       this.y < MovableObject.y + MovableObject.height
     );
+  }
+
+  hit() {
+    this.energy -= 5;
+    if (this.energy < 0) {
+      this.energy = 0;
+    }
+  }
+
+  isDead(){
+    return this.energy==0;
   }
 
   loadImages(arr) {
