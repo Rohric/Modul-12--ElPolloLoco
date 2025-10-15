@@ -46,16 +46,26 @@ class World {
 
   addToMap(MovableObject) {
     if (MovableObject.otherDirection) {
-      this.ctx.save();
-      this.ctx.translate(MovableObject.width, 0);
-      this.ctx.scale(-1, 1);
-      MovableObject.x = MovableObject.x * -1;
+      this.flipImage(MovableObject);
     }
+    MovableObject.draw(this.ctx);
+    // Rotes quadrat für die kollisionsrechnung
+    MovableObject.drawFrame(this.ctx);
 
-    this.ctx.drawImage(MovableObject.img, MovableObject.x, MovableObject.y, MovableObject.width, MovableObject.height);
     if (MovableObject.otherDirection) {
-      MovableObject.x = MovableObject.x * -1;
-      this.ctx.restore();
+      this.flipImageBack(MovableObject);
     }
+  }
+
+  flipImage(MovableObject) {
+    this.ctx.save();
+    this.ctx.translate(MovableObject.width, 0);
+    this.ctx.scale(-1, 1);
+    MovableObject.x = MovableObject.x * -1;
+  }
+
+  flipImageBack(MovableObject) {
+    MovableObject.x = MovableObject.x * -1;
+    this.ctx.restore();
   }
 }
