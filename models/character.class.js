@@ -20,7 +20,6 @@ class Character extends MovableObject {
 
   animate() {
     setInterval(() => {
-
       if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
         this.x += this.speed;
         this.otherDirection = false;
@@ -34,12 +33,8 @@ class Character extends MovableObject {
 
     setInterval(() => {
       if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-
         // Walk Animation
-        let intervall = this.currentImage % this.images_walking.length;
-        let path = this.images_walking[intervall];
-        this.img = this.imageCache[path];
-        this.currentImage++;
+        this.playAnimation(this.images_walking);
       }
     }, 100);
   }
