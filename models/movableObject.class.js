@@ -12,6 +12,7 @@ class MovableObject {
   acceleration = 2.5;
 
   energy = 100;
+  lastHit = 0;
 
   otherDirection = false;
 
@@ -46,7 +47,7 @@ class MovableObject {
       ctx.stroke();
     }
   }
-// fgdggsfgfdgdg
+
   isColliding(MovableObject) {
     return (
       this.x + this.width > MovableObject.x &&
@@ -60,11 +61,18 @@ class MovableObject {
     this.energy -= 5;
     if (this.energy < 0) {
       this.energy = 0;
+    } else {
+      this.lastHit = new Date().getTime();
     }
   }
+  isHurt() {
+    let timepassed = new Date().getTime() - this.lastHit;
+    timepassed = timepassed / 1000;
+    return timepassed < 1;
+  }
 
-  isDead(){
-    return this.energy==0;
+  isDead() {
+    return this.energy == 0;
   }
 
   loadImages(arr) {
@@ -76,7 +84,7 @@ class MovableObject {
   }
 
   playAnimation(images) {
-    let intervall = this.currentImage % this.images_walking.length;
+    let intervall = this.currentImage % images.length;
     let path = images[intervall];
     this.img = this.imageCache[path];
     this.currentImage++;

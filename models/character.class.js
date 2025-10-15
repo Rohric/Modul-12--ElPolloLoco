@@ -32,12 +32,19 @@ class Character extends MovableObject {
     "img/2_character_pepe/5_dead/D-56.png",
     "img/2_character_pepe/5_dead/D-57.png",
   ]
+
+  images_hurt=[
+    "img/2_character_pepe/4_hurt/H-41.png",
+    "img/2_character_pepe/4_hurt/H-42.png",
+    "img/2_character_pepe/4_hurt/H-43.png",
+  ]
   world;
   constructor() {
     super().loadImage("img/2_character_pepe/2_walk/W-21.png");
     this.loadImages(this.images_walking);
     this.loadImages(this.images_jumping);
     this.loadImages(this.images_dead);
+    this.loadImages(this.images_hurt);
 
     this.animate();
     this.applyGravity();
@@ -67,7 +74,11 @@ class Character extends MovableObject {
       if (this.isDead()) {
         this.playAnimation(this.images_dead);
         
-      }else if (this.isAboveGround()) {
+      }else if(this.isHurt()){
+        this.playAnimation(this.images_hurt);
+
+      }
+      else if (this.isAboveGround()) {
         this.playAnimation(this.images_jumping);
       } else {
 
