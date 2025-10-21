@@ -29,9 +29,12 @@
     <script src="java_script/game.js"></script>
   </head>
 
-  <body onload="init()">
-    <div class="background">
-      <h1>Ell Pollo Locco</h1>
+  <body onload="setupGame()">
+    <div class="startscreen background" id="Startscreen">
+      <h2>Press P for Play to Play <small>el</small>Pollo Locco!</h2>
+    </div>
+    <div class="background display_none" id="gameContainer">
+      <h1>El Pollo Locco</h1>
       <canvas id="canvas" width="720" height="480"> </canvas>
     </div>
   </body>
