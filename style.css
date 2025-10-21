@@ -1,10 +1,26 @@
-body{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: rgb(10, 10, 10);
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  min-height: 100vh;
+  background-color: black;
 }
 
-canvas{
-    background-color: black;
+.background {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-image: url("img/9_intro_outro_screens/overlay.jpg") !important;
+  background-size: contain;
+
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+canvas {
+  background-color: black;
 }
