@@ -57,6 +57,7 @@ class Character extends MovableObject {
 
   constructor() {
     super().loadImage("img/2_character_pepe/2_walk/W-21.png");
+    this.loadImages(this.images_idle);
     this.loadImages(this.images_walking);
     this.loadImages(this.images_jumping);
     this.loadImages(this.images_dead);
@@ -88,13 +89,21 @@ class Character extends MovableObject {
     setInterval(() => {
       if (this.isDead()) {
         this.playAnimation(this.images_dead);
-      } else if (this.isHurt()) {
-        this.playAnimation(this.images_hurt);
-      } else if (this.isAboveGround()) {
-        this.playAnimation(this.images_jumping);
-      } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-        this.playAnimation(this.images_walking);
+        return;
       }
+      if (this.isHurt()) {
+        this.playAnimation(this.images_hurt);
+        return;
+      }
+      if (this.isAboveGround()) {
+        this.playAnimation(this.images_jumping);
+        return;
+      }
+      if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+        this.playAnimation(this.images_walking);
+        return;
+      }
+      this.playAnimation(this.images_idle);
     }, 50);
   }
 
