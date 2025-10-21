@@ -11,6 +11,7 @@ class StatusBar_Coin extends StatusBar {
       ],
       x: 10,
       y: 100,
+      initialPercentage: 0,
     });
   }
 }
