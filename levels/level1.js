@@ -8,6 +8,8 @@ function createLevel1() {
 
     [new Coin(0), new Coin(1), new Coin(2), new Coin(3), new Coin(4)],
 
+    [new Bottle(0), new Bottle(1), new Bottle(2), new Bottle(3), new Bottle(4)],
+
     [
       new BackgroundObject("img/5_background/layers/air.png", -719),
       new BackgroundObject("img/5_background/layers/3_third_layer/2.png", -719),
