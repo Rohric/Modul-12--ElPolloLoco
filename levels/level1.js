@@ -2,9 +2,11 @@ let level1;
 
 function createLevel1() {
   return new Level(
-    [new Chicken(), new Chicken(), new Chicken(), new Endboss()],
+    [new Chicken(0), new Chicken(1), new Chicken(2), new Chicken(3), new Chicken(4), new Endboss()],
 
-    [new Cloud()],
+    [new Cloud(0), new Cloud(1), new Cloud(2), new Cloud(3), new Cloud(4)],
+
+    [new Coin(0), new Coin(1), new Coin(2), new Coin(3), new Coin(4)],
 
     [
       new BackgroundObject("img/5_background/layers/air.png", -719),

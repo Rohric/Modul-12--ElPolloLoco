@@ -1,4 +1,8 @@
 class Chicken extends MovableObject {
+  static BASE_X = 400;
+  static GAP_X = 350;
+  static RANDOM_OFFSET_X = 150;
+
   y = 370;
   height = 60;
   width = 80;
@@ -8,11 +12,12 @@ class Chicken extends MovableObject {
     "img/3_enemies_chicken/chicken_normal/1_walk/3_w.png",
   ];
 
-  constructor() {
+  constructor(index = 0) {
     super().loadImage("img/3_enemies_chicken/chicken_normal/1_walk/1_w.png");
     this.loadImages(this.images_walking);
 
-    this.x = 200 + Math.random() * 500;
+    const randomOffset = Math.random() * Chicken.RANDOM_OFFSET_X;
+    this.x = Chicken.BASE_X + index * Chicken.GAP_X + randomOffset;
     this.speed = 0.15 + Math.random() * 0.5;
 
     this.animate();

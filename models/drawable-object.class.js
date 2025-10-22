@@ -17,11 +17,13 @@ class DrawableObject {
   }
 
   drawFrame(ctx) {
-    if (this instanceof Character || this instanceof Chicken || this instanceof Endboss) {
+    if (this instanceof Character || this instanceof Chicken || this instanceof Coin || this instanceof Endboss) {
       ctx.beginPath();
+      // red square
       ctx.lineWidth = "5";
       ctx.strokeStyle = "red";
       ctx.rect(this.x, this.y, this.width, this.height);
+      // red square
       ctx.stroke();
     }
   }
