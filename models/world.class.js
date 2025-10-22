@@ -27,14 +27,18 @@ class World {
   run() {
     setInterval(() => {
       this.checkCollisions();
+      this.checkCollectables();
       this.checkThrowObjects();
     }, 200);
   }
 
   checkThrowObjects() {
-    if (this.keyboard.D) {
-      let bottle = new ThrowablaObject(this.character.x + 100, this.character.y + 100);
-      this.throwableObjects.push(bottle);
+    if (this.keyboard.D && this.character.canUse("bottle")) {
+      if (this.character.use("bottle")) {
+        let bottle = new ThrowablaObject(this.character.x + 100, this.character.y + 100);
+        this.throwableObjects.push(bottle);
+        this.statusBar_Bottle.setPercentage(this.character.inventoryPercentage("bottle"));
+      }
     }
   }
 
@@ -46,6 +50,31 @@ class World {
 
         console.log("collision with Character, enery", this.character.energy);
       }
+    });
+  }
+
+  checkCollectables() {
+    this.collectBottles();
+    this.collectCoins();
+  }
+
+  collectBottles() {
+    this.level.bottles = this.level.bottles.filter((bottle) => {
+      if (this.character.isColliding(bottle) && this.character.collect("bottle")) {
+        this.statusBar_Bottle.setPercentage(this.character.inventoryPercentage("bottle"));
+        return false;
+      }
+      return true;
+    });
+  }
+
+  collectCoins() {
+    this.level.coins = this.level.coins.filter((coin) => {
+      if (this.character.isColliding(coin) && this.character.collect("coin")) {
+        this.statusBar_Coin.setPercentage(this.character.inventoryPercentage("coin"));
+        return false;
+      }
+      return true;
     });
   }
 

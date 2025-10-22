@@ -55,6 +55,11 @@ class Character extends MovableObject {
   ];
   world;
 
+  inventory = {
+    bottle: { count: 0, max: 5 },
+    coin: { count: 0, max: 5 },
+  };
+
   constructor() {
     super().loadImage("img/2_character_pepe/2_walk/W-21.png");
     this.loadImages(this.images_idle);
@@ -109,5 +114,49 @@ class Character extends MovableObject {
 
   jump() {
     this.speedY = 30;
+  }
+
+  getInventoryItem(type) {
+    return this.inventory[type];
+  }
+
+  canCollect(type) {
+    const item = this.getInventoryItem(type);
+    if (!item) {
+      return false;
+    }
+    return item.count < item.max;
+  }
+
+  collect(type) {
+    if (!this.canCollect(type)) {
+      return false;
+    }
+    this.inventory[type].count++;
+    return true;
+  }
+
+  canUse(type) {
+    const item = this.getInventoryItem(type);
+    if (!item) {
+      return false;
+    }
+    return item.count > 0;
+  }
+
+  use(type) {
+    if (!this.canUse(type)) {
+      return false;
+    }
+    this.inventory[type].count--;
+    return true;
+  }
+
+  inventoryPercentage(type) {
+    const item = this.getInventoryItem(type);
+    if (!item || item.max === 0) {
+      return 0;
+    }
+    return (item.count / item.max) * 100;
   }
 }
