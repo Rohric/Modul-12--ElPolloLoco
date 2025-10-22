@@ -33,11 +33,11 @@ class World {
   }
 
   checkThrowObjects() {
-    if (this.keyboard.D && this.character.canUse("bottle")) {
-      if (this.character.use("bottle")) {
+    if (this.keyboard.D && CollectableItem.canUse(this.character, "bottle")) {
+      if (CollectableItem.use(this.character, "bottle")) {
         let bottle = new ThrowablaObject(this.character.x + 100, this.character.y + 100);
         this.throwableObjects.push(bottle);
-        this.statusBar_Bottle.setPercentage(this.character.inventoryPercentage("bottle"));
+        this.statusBar_Bottle.setPercentage(CollectableItem.inventoryPercentage(this.character, "bottle"));
       }
     }
   }
@@ -60,8 +60,8 @@ class World {
 
   collectBottles() {
     this.level.bottles = this.level.bottles.filter((bottle) => {
-      if (this.character.isColliding(bottle) && this.character.collect("bottle")) {
-        this.statusBar_Bottle.setPercentage(this.character.inventoryPercentage("bottle"));
+      if (this.character.isColliding(bottle) && CollectableItem.collect(this.character, "bottle")) {
+        this.statusBar_Bottle.setPercentage(CollectableItem.inventoryPercentage(this.character, "bottle"));
         return false;
       }
       return true;
@@ -70,8 +70,8 @@ class World {
 
   collectCoins() {
     this.level.coins = this.level.coins.filter((coin) => {
-      if (this.character.isColliding(coin) && this.character.collect("coin")) {
-        this.statusBar_Coin.setPercentage(this.character.inventoryPercentage("coin"));
+      if (this.character.isColliding(coin) && CollectableItem.collect(this.character, "coin")) {
+        this.statusBar_Coin.setPercentage(CollectableItem.inventoryPercentage(this.character, "coin"));
         return false;
       }
       return true;
