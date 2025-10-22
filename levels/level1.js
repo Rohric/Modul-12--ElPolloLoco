@@ -6,9 +6,9 @@ function createLevel1() {
 
     [new Cloud(0), new Cloud(1), new Cloud(2), new Cloud(3), new Cloud(4)],
 
-    [new Coin(0), new Coin(1), new Coin(2), new Coin(3), new Coin(4)],
+    [new ItemCoin(0), new ItemCoin(1), new ItemCoin(2), new ItemCoin(3), new ItemCoin(4)],
 
-    [new Bottle(0), new Bottle(1), new Bottle(2), new Bottle(3), new Bottle(4)],
+    [new ItemBottle(0), new ItemBottle(1), new ItemBottle(2), new ItemBottle(3), new ItemBottle(4)],
 
     [
       new BackgroundObject("img/5_background/layers/air.png", -719),
