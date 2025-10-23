@@ -29,13 +29,18 @@ class World {
       this.checkCollisions();
       this.checkCollectables();
       this.checkThrowObjects();
+      this.checkBottleCollisions();
     }, 200);
   }
 
   checkThrowObjects() {
     if (this.keyboard.D && this.character.canUse("bottle")) {
       if (this.character.use("bottle")) {
-        let bottle = new ThrowablaObject(this.character.x + 100, this.character.y + 100);
+        const direction = this.character.otherDirection ? -1 : 1;
+        const offsetX = direction === 1 ? this.character.x + this.character.width : this.character.x;
+        const offsetY = this.character.y + this.character.height / 2;
+        let bottle = new ThrowablaObject(offsetX, offsetY, direction);
+        bottle.otherDirection = direction === -1;
         this.throwableObjects.push(bottle);
         this.statusBar_Bottle.setPercentage(this.character.inventoryPercentage("bottle"));
       }
@@ -88,6 +93,32 @@ class World {
         return false;
       }
       return true;
+    });
+  }
+
+  checkBottleCollisions() {
+    this.throwableObjects = this.throwableObjects.filter((bottle) => {
+      let hasHit = false;
+      this.level.enemies.forEach((enemy) => {
+        if (hasHit || !enemy || enemy.dead) {
+          return;
+        }
+        if (bottle.isColliding(enemy)) {
+          bottle.stop();
+          hasHit = true;
+          if (enemy instanceof Endboss) {
+            enemy.takeDamage(25);
+          } else if (typeof enemy.die === "function") {
+            enemy.die();
+            setTimeout(() => {
+              this.level.enemies = this.level.enemies.filter((currentEnemy) => currentEnemy !== enemy);
+            }, 400);
+          } else if (typeof enemy.hit === "function") {
+            enemy.hit();
+          }
+        }
+      });
+      return !hasHit;
     });
   }
 
