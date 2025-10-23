@@ -44,11 +44,24 @@ class World {
 
   checkCollisions() {
     this.level.enemies.forEach((enemy) => {
+      if (!enemy || enemy.dead) {
+        return;
+      }
       if (this.character.isColliding(enemy)) {
-        this.character.hit();
-        this.statusBar.setPercentage(this.character.energy);
+        const canBeStomped = typeof enemy.die === "function";
+        if (canBeStomped && this.character.isFallingOn(enemy)) {
+          enemy.die();
+          this.character.speedY = 20;
+          this.character.y = enemy.y - this.character.height;
+          setTimeout(() => {
+            this.level.enemies = this.level.enemies.filter((currentEnemy) => currentEnemy !== enemy);
+          }, 400);
+        } else {
+          this.character.hit();
+          this.statusBar.setPercentage(this.character.energy);
 
-        console.log("collision with Character, enery", this.character.energy);
+          console.log("collision with Character, enery", this.character.energy);
+        }
       }
     });
   }

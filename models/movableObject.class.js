@@ -26,12 +26,15 @@ class MovableObject extends DrawableObject {
     }
   }
 
-  isColliding(MovableObject) {
+  isColliding(other) {
+    if (!other) {
+      return false;
+    }
     return (
-      this.x + this.width > MovableObject.x &&
-      this.y + this.height > MovableObject.y &&
-      this.x < MovableObject.x &&
-      this.y < MovableObject.y + MovableObject.height
+      this.x < other.x + other.width &&
+      this.x + this.width > other.x &&
+      this.y < other.y + other.height &&
+      this.y + this.height > other.y
     );
   }
 

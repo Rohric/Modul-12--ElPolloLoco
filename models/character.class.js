@@ -14,7 +14,6 @@ class Character extends MovableObject {
     "img/2_character_pepe/1_idle/idle/I-8.png",
     "img/2_character_pepe/1_idle/idle/I-9.png",
     "img/2_character_pepe/1_idle/idle/I-10.png",
-
   ];
 
   images_walking = [
@@ -109,7 +108,7 @@ class Character extends MovableObject {
         return;
       }
       this.playAnimation(this.images_idle);
-    },100);
+    }, 100);
   }
 
   jump() {
@@ -158,5 +157,16 @@ class Character extends MovableObject {
       return 0;
     }
     return (item.count / item.max) * 100;
+  }
+
+  isFallingOn(enemy) {
+    if (!enemy || !this.isColliding(enemy)) {
+      return false;
+    }
+    const characterBottom = this.y + this.height;
+    const enemyTop = enemy.y;
+    const overlap = characterBottom - enemyTop;
+    const maxOverlap = enemy.height * 0.5;
+    return this.speedY < 0 && overlap >= 0 && overlap <= maxOverlap;
   }
 }
