@@ -30,12 +30,9 @@ class MovableObject extends DrawableObject {
     if (!other) {
       return false;
     }
-    return (
-      this.x < other.x + other.width &&
-      this.x + this.width > other.x &&
-      this.y < other.y + other.height &&
-      this.y + this.height > other.y
-    );
+    const overlapsHorizontally = this.x + this.width >= other.x && this.x <= other.x + other.width;
+    const overlapsVertically = this.y + this.height >= other.y && this.y <= other.y + other.height;
+    return overlapsHorizontally && overlapsVertically;
   }
 
   hit() {

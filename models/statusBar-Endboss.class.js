@@ -10,7 +10,7 @@ class StatusBar_Endboss extends StatusBar {
         "img/7_statusbars/2_statusbar_endboss/blue/blue100.png",
       ],
       x: 10,
-      y: 450,
+      y: 420,
       initialPercentage: 0,
     });
   }

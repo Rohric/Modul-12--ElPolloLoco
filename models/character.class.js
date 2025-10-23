@@ -2,6 +2,7 @@ class Character extends MovableObject {
   height = 280;
   y = 80;
   speed = 10;
+  stompTolerance = 60;
 
   images_idle = [
     "img/2_character_pepe/1_idle/idle/I-1.png",
@@ -160,13 +161,17 @@ class Character extends MovableObject {
   }
 
   isFallingOn(enemy) {
-    if (!enemy || !this.isColliding(enemy)) {
+    if (!enemy) {
+      return false;
+    }
+    if (!this.isColliding(enemy)) {
+      return false;
+    }
+    if (this.speedY >= 0) {
       return false;
     }
     const characterBottom = this.y + this.height;
     const enemyTop = enemy.y;
-    const overlap = characterBottom - enemyTop;
-    const maxOverlap = enemy.height * 0.5;
-    return this.speedY < 0 && overlap >= 0 && overlap <= maxOverlap;
+    return characterBottom >= enemyTop && characterBottom <= enemyTop + this.stompTolerance;
   }
 }

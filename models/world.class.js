@@ -105,27 +105,48 @@ class World {
   }
 
   checkCollisions() {
-    this.level.enemies.forEach((enemy) => {
-      if (!enemy || enemy.dead) {
-        return;
-      }
-      if (this.character.isColliding(enemy)) {
-        const canBeStomped = typeof enemy.die === "function";
-        if (canBeStomped && this.character.isFallingOn(enemy)) {
-          enemy.die();
-          this.character.speedY = 20;
-          this.character.y = enemy.y - this.character.height;
-          setTimeout(() => {
-            this.level.enemies = this.level.enemies.filter((currentEnemy) => currentEnemy !== enemy);
-          }, 400);
-        } else {
-          this.character.hit();
-          this.statusBar.setPercentage(this.character.energy);
+    this.level.enemies.forEach((enemy) => this.handleEnemyCollision(enemy));
+  }
 
-          console.log("collision with Character, enery", this.character.energy);
-        }
-      }
-    });
+  handleEnemyCollision(enemy) {
+    if (!enemy || enemy.dead) {
+      return;
+    }
+    if (!this.character.isColliding(enemy)) {
+      return;
+    }
+    if (this.canStomp(enemy) && this.character.isFallingOn(enemy)) {
+      this.stompEnemy(enemy);
+      return;
+    }
+    this.characterHit(enemy);
+  }
+
+  canStomp(enemy) {
+    return typeof enemy.die === "function";
+  }
+
+  stompEnemy(enemy) {
+    enemy.die();
+    this.bounceOffEnemy(enemy);
+    this.scheduleEnemyRemoval(enemy);
+  }
+
+  bounceOffEnemy(enemy) {
+    this.character.speedY = 20;
+    this.character.y = enemy.y - this.character.height;
+  }
+
+  scheduleEnemyRemoval(enemy, delay = 200) {
+    setTimeout(() => {
+      this.level.enemies = this.level.enemies.filter((currentEnemy) => currentEnemy !== enemy);
+    }, delay);
+  }
+
+  characterHit(enemy) {
+    this.character.hit(enemy);
+    this.statusBar.setPercentage(this.character.energy);
+    console.log("collision with Character, enery", this.character.energy);
   }
 
   checkCollectables() {
