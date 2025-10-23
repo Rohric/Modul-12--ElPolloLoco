@@ -9,12 +9,25 @@ class World {
   statusBar = new StatusBar_Health();
   statusBar_Bottle = new StatusBar_Bottle();
   statusBar_Coin = new StatusBar_Coin();
+  statusBar_Endboss = new StatusBar_Endboss();
   throwableObjects = [];
+  bossStatusBarVisible = false;
+  endboss = null;
+  bossEncounterTriggered = false;
+  bossTriggerX = null;
+  bossTargetX = null;
+  originalLevelEndX = null;
+  bossWaveTimeouts = [];
 
   constructor(canvas) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
+    this.statusBar_Endboss.setPercentage(0);
+    this.originalLevelEndX = this.level.level_end_x;
+    this.bossTriggerX = this.originalLevelEndX - 150;
+    this.bossTargetX = this.originalLevelEndX - 20;
+    this.level.level_end_x = this.bossTriggerX;
     this.draw();
     this.setWorld();
     this.run();
@@ -26,11 +39,55 @@ class World {
 
   run() {
     setInterval(() => {
+      this.checkBossEncounter();
       this.checkCollisions();
       this.checkCollectables();
       this.checkThrowObjects();
       this.checkBottleCollisions();
     }, 200);
+  }
+
+  checkBossEncounter() {
+    if (this.bossEncounterTriggered) {
+      return;
+    }
+    const characterFront = this.character.x + this.character.width;
+    if (characterFront >= this.bossTriggerX) {
+      this.triggerBossEncounter();
+    }
+  }
+
+  triggerBossEncounter() {
+    this.bossEncounterTriggered = true;
+    this.bossStatusBarVisible = true;
+    this.statusBar_Endboss.setPercentage(100);
+    this.endboss = new Endboss();
+    this.endboss.setDeathCallback(() => this.handleBossDeath());
+    this.level.enemies.push(this.endboss);
+    this.endboss.startEncounter({
+      targetX: this.bossTargetX,
+      onAttackStart: () => this.spawnBossWave(),
+    });
+  }
+
+  spawnBossWave() {
+    this.clearBossWaveTimeouts();
+    const waveCount = 10;
+    const spawnBaseX = this.bossTargetX + 120;
+    for (let i = 0; i < waveCount; i++) {
+      const timeoutId = setTimeout(() => {
+        const chicken = new Chicken();
+        chicken.x = spawnBaseX + i * 80 + Math.random() * 60;
+        chicken.speed = 0.3 + Math.random() * 0.5;
+        this.level.enemies.push(chicken);
+      }, i * 250);
+      this.bossWaveTimeouts.push(timeoutId);
+    }
+  }
+
+  clearBossWaveTimeouts() {
+    this.bossWaveTimeouts.forEach((timeoutId) => clearTimeout(timeoutId));
+    this.bossWaveTimeouts = [];
   }
 
   checkThrowObjects() {
@@ -108,6 +165,7 @@ class World {
           hasHit = true;
           if (enemy instanceof Endboss) {
             enemy.takeDamage(25);
+            this.updateBossHealthBar(enemy);
           } else if (typeof enemy.die === "function") {
             enemy.die();
             setTimeout(() => {
@@ -120,6 +178,27 @@ class World {
       });
       return !hasHit;
     });
+  }
+
+  updateBossHealthBar(boss) {
+    if (!this.bossStatusBarVisible || !boss) {
+      return;
+    }
+    const percentage = (boss.energy / boss.maxEnergy) * 100;
+    this.statusBar_Endboss.setPercentage(percentage);
+  }
+
+  handleBossDeath() {
+    if (!this.endboss) {
+      return;
+    }
+    this.clearBossWaveTimeouts();
+    this.bossStatusBarVisible = false;
+    this.statusBar_Endboss.setPercentage(0);
+    const defeatedBoss = this.endboss;
+    this.level.enemies = this.level.enemies.filter((enemy) => enemy !== defeatedBoss);
+    this.endboss = null;
+    this.level.level_end_x = this.originalLevelEndX;
   }
 
   draw() {
@@ -147,6 +226,12 @@ class World {
     this.ctx.translate(-this.camera_x, 0);
     this.addToMap(this.statusBar_Coin);
     this.ctx.translate(this.camera_x, 0);
+
+    if (this.bossStatusBarVisible) {
+      this.ctx.translate(-this.camera_x, 0);
+      this.addToMap(this.statusBar_Endboss);
+      this.ctx.translate(this.camera_x, 0);
+    }
 
     this.ctx.translate(-this.camera_x, 0);
 

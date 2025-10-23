@@ -2,7 +2,7 @@ let level1;
 
 function createLevel1() {
   return new Level(
-    [new Chicken(0), new Chicken(1), new Chicken(2), new Chicken(3), new Chicken(4), new Endboss()],
+    [new Chicken(0), new Chicken(1), new Chicken(2), new Chicken(3), new Chicken(4)],
 
     [new Cloud(0), new Cloud(1), new Cloud(2), new Cloud(3), new Cloud(4)],
 
